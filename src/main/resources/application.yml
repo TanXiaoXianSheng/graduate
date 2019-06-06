@@ -1,0 +1,12 @@
+spring:
+  freemarker:
+    charset: utf-8
+    check-template-location: true
+    template-loader-path: classpath:/webapps/templates
+  datasource:
+    url: jdbc:mysql://localhost:3306/movielens
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 1226
+server:
+  port: 8089
