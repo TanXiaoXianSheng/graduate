@@ -1,5 +1,6 @@
 package cn.bcf.bootstrap.util;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public class ReturnObj<T> {
     private List<T> entityList;
 
     private JSONObject jsonObject;
+
+    private JSONArray arr;
 
     //分页用
     private int total;
@@ -92,15 +95,24 @@ public class ReturnObj<T> {
         this.jsonObject = jsonObject;
     }
 
+    public JSONArray getArr() {
+        return arr;
+    }
+
+    public void setArr(JSONArray arr) {
+        this.arr = arr;
+    }
+
     @Override
     public String toString() {
-        return "ReturnObj{" +
+        return "{" +
                 "msgCode='" + msgCode + '\'' +
                 ", msg='" + msg + '\'' +
                 ", url='" + url + '\'' +
                 ", entity=" + entity +
                 ", entityList=" + entityList +
                 ", jsonObject=" + jsonObject +
+                ", arr=" + arr +
                 ", total=" + total +
                 ", rows=" + rows +
                 '}';

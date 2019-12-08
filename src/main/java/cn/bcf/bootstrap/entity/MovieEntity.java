@@ -18,8 +18,13 @@ public class MovieEntity {
     @Column(name = "movie_name")
     private String movieName;
 
+    //存的电影标签id
     @Column(name = "movie_label")
     private String movieLabel;
+
+    //数据存储状态，1：保存，0：暂存，-1：删除
+    @Column(name = "store_status")
+    private int storeStatus;
 
     public MovieEntity() {
     }
@@ -63,4 +68,23 @@ public class MovieEntity {
         this.movieLabel = movieLabel;
     }
 
+
+    public int getStoreStatus() {
+        return storeStatus;
+    }
+
+    public void setStoreStatus(int storeStatus) {
+        this.storeStatus = storeStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", movieId=" + movieId +
+                ", movieName='" + movieName + '\'' +
+                ", movieLabel='" + movieLabel + '\'' +
+                ", storeStatus=" + storeStatus +
+                '}';
+    }
 }

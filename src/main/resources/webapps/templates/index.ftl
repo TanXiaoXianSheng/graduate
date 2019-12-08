@@ -40,13 +40,13 @@
 
                 <li class="nav-item">
                     <a href="/index/ALS" class="nav-link active">
-                        <i class="icon icon-speedometer"></i> 协同过滤
+                        <i class="icon icon-speedometer"></i> 111
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="/index/itemRec" class="nav-link active">
-                        <i class="icon icon-speedometer"></i> 基于内容的推荐
+                        <i class="icon icon-speedometer"></i> 222
                     </a>
                 </li>
 
@@ -70,6 +70,12 @@
                             <button class="btn btn-default" type="button">Go!</button>
                         </span>
                     </div>
+                </div>
+
+                <div>
+                    <button type="button" class="btn btn-default">
+                        <a href="/index/add">新增</a>
+                    </button>
                 </div>
             </div>
 
@@ -111,9 +117,45 @@ $('#table').bootstrapTable({
     {
         field: 'movieLabel',
         title: '电影标签',
-        width: "40%"
+        width: "20%"
+    },
+    {
+        field: "id",
+        title: "操作",
+        width: "20%",
+        align: 'center',
+        valign: 'middle',
+        formatter : function (value, row, index) {
+            var result = ""
+            result += "<a href='/index/view?id=" + value + "' class='btn btn-xs'>查看</a>"
+            result += "<a href='/index/edit?id=" + value + "' class='btn btn-xs'>编辑</a>"
+            result += "<a href='/index/delete?id=" + value + "' class='btn btn-xs'>删除</a>"
+            return result
+        }
     }]
 });
+
+$("#add").click(function () {
+    $.ajax({
+        url:"/index/add",
+        type:"POST",
+        dataType:"json",
+        contentType:"application/json;charset=UTF-8",
+        success:function (result) {
+            debugger
+            if(result.msgCode == "1"){
+                window.location = result.url;
+            }else if(result.msgCode == "0"){
+                alert("登录失败，请重新登录")
+                window.location = result.url;
+            }
+        } ,
+        error:function (result) {
+            debugger
+            alert("发生错误");
+        }
+    })
+})
 
 </script>
 </@override>

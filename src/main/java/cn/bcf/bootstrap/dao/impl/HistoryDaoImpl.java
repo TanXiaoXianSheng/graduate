@@ -9,7 +9,7 @@ import java.util.List;
 @Repository(value = "historyDao")
 public class HistoryDaoImpl extends BaseDaoImpl<HistoryEntity> implements HistoryDao<HistoryEntity> {
 
-    String tableName = "HistoryEntity";
+    private String tableName = "HistoryEntity";
 
     @Override
     public Integer getCount() {

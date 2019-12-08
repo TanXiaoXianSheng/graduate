@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BootstrapApplication {
 
     public static void main(String[] args) {
-        System.setProperty("hadoop.home.dir", "D:\\WorkSoft\\hadoop2.6_Win_x64");
+        //System.setProperty("hadoop.home.dir", "D:\\WorkSoft\\hadoop2.6_Win_x64");
         SpringApplication.run(BootstrapApplication.class, args);
     }
 

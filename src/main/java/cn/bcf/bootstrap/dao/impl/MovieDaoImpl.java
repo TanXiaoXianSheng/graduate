@@ -18,7 +18,7 @@ public class MovieDaoImpl extends BaseDaoImpl<MovieEntity> implements MovieDao<M
 
     @Override
     public MovieEntity findById(Integer id) {
-        return null;
+        return findById(tableName,id);
     }
 
     @Override

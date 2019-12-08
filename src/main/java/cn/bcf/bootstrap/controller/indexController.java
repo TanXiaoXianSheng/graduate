@@ -3,14 +3,17 @@ package cn.bcf.bootstrap.controller;
 import cn.bcf.bootstrap.conf.ItemCF;
 import cn.bcf.bootstrap.conf.SparkALS;
 import cn.bcf.bootstrap.entity.HistoryEntity;
+import cn.bcf.bootstrap.entity.LabelEntity;
 import cn.bcf.bootstrap.entity.MovieEntity;
 import cn.bcf.bootstrap.service.HistoryService;
+import cn.bcf.bootstrap.service.LabelService;
 import cn.bcf.bootstrap.service.MovieService;
 import cn.bcf.bootstrap.util.ReturnObj;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,11 +38,69 @@ public class indexController {
     @Autowired
     private HistoryService historyService;
 
+    @Autowired
+    private LabelService labelService;
+
     @RequestMapping("/")
     public ModelAndView index(){
         ModelAndView view = new ModelAndView();
         view.setViewName("/index");
         return view;
+    }
+
+    @ResponseBody
+    @RequestMapping("/add")
+    public ModelAndView add(){
+        ModelAndView view = new ModelAndView();
+        view.setViewName("/add");
+        return view;
+    }
+
+    @RequestMapping("/view")
+    public ModelAndView view(@RequestParam int id){
+        return viewAndEdit(id,"view");
+    }
+
+    @ResponseBody
+    @RequestMapping("/edit")
+    public ModelAndView edit(@RequestParam int id){
+        return viewAndEdit(id,"edit");
+    }
+
+    private ModelAndView viewAndEdit(Integer id,String type){
+        ModelAndView view = new ModelAndView();
+        view.addObject("type","{'type':'" + type + "'}");
+        view.addObject("id",id);
+        view.addObject("entity",JSONObject.toJSON(movieService.findById(id)).toString());
+        view.setViewName("viewAndEdit");
+        return view;
+    }
+
+    @ResponseBody
+    @RequestMapping("/delete")
+    public ReturnObj delete(){
+        ReturnObj returnObj = new ReturnObj();
+        return returnObj;
+    }
+
+    @ResponseBody
+    @RequestMapping("/save")
+    public ReturnObj save(@RequestBody MovieEntity entity, @RequestParam String type){
+        ReturnObj returnObj = new ReturnObj();
+        switch (type){
+            case "save":entity.setStoreStatus(1);break;
+            case "temp":entity.setStoreStatus(0);break;
+        }
+        if (movieService.add(entity)){
+            returnObj.setMsgCode("1");
+            returnObj.setMsg("写入成功");
+        } else {
+            returnObj.setMsgCode("0");
+            returnObj.setMsg("写入失败");
+        }
+        returnObj.setUrl("/index/");
+
+        return returnObj;
     }
 
     @ResponseBody
@@ -51,102 +112,17 @@ public class indexController {
     }
 
     @ResponseBody
-    @RequestMapping("/ALS")
-    public ModelAndView sparkAls(){
-        ModelAndView view = new ModelAndView();
-        view.setViewName("/als");
-        return view;
-    }
-
-    @ResponseBody
-    @RequestMapping("/listByPageAls")
-    public JSONArray listByPageAls(){
-        int userId = 1;
-        int k;
-        SparkALS sparkALS = new SparkALS();
-        List<Integer> movieIdList = sparkALS.recommend(userId,10);
-        List<MovieEntity> movieList = new ArrayList<>();
-
-        JSONArray jsonArray = new JSONArray();
-        for (Integer movieId : movieIdList){
-            //movieList.add(movieService.findByMovieId(movieId));
-            jsonArray.add(movieService.findByMovieId(movieId));
-        }
-        return jsonArray;
-    }
-
-    @ResponseBody
-    @RequestMapping("/itemRec")
-    public ModelAndView itemRec(){
-        ModelAndView view = new ModelAndView();
-        view.setViewName("/itemRec");
-        return view;
-    }
-
-    @ResponseBody
-    @RequestMapping("/listByPageItemRecHistory")
-    public JSONArray listByPageItemRecHistory(){
-        int userId = 1;
-        HistoryEntity historyEntity = historyService.findByUserId(userId);
-
-        MovieEntity movieEntity = movieService.findByMovieId(historyEntity.getMovieId());
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.add(JSONObject.toJSON(movieEntity));
-        return jsonArray;
-    }
-
-    @ResponseBody
-    @RequestMapping("/listByPageItemRec")
-    public JSONArray listByPageItemRec(){
-        int userId = 1;
-        HistoryEntity historyEntity = historyService.findByUserId(userId);
-
-        int movieId = historyEntity.getMovieId();
-        List<MovieEntity> list = movieService.findAll();
-        ItemCF itemCF = new ItemCF();
-        itemCF.pre(list);
-        Map<Integer, Double> map = itemCF.recommend(movieId,10);
-
-        List<MovieEntity> recList = new ArrayList<>();
-        for (Map.Entry<Integer,Double> entry : map.entrySet()){
-            recList.add(movieService.findByMovieId(entry.getKey()));
-        }
-
-        MovieEntity movieEntity = movieService.findByMovieId(historyEntity.getMovieId());
-        JSONArray jsonArray = new JSONArray();
-        jsonArray = (JSONArray) JSONObject.toJSON(recList);
-        return jsonArray;
-    }
-
-    @ResponseBody
-    @RequestMapping("/watch")
-    public ReturnObj watch(@RequestParam int movieId){
-        int userId = 1;
+    @RequestMapping("/movieLabel")
+    public ReturnObj movieLabel(){
         ReturnObj returnObj = new ReturnObj();
-        if (movieId != 0){
-            MovieEntity entity = movieService.findByMovieId(movieId);
-            if (entity != null){
-                HistoryEntity historyEntity = new HistoryEntity();
-                historyEntity.setUserId(userId);
-                historyEntity.setMovieId(entity.getMovieId());
-                historyEntity.setStartTime(String.valueOf(System.currentTimeMillis()));
-                boolean bool = historyService.add(historyEntity);
-
-                if (bool == true){
-                    returnObj.setMsgCode("1");
-                    returnObj.setMsg("已存入观看历史库");
-                }else {
-                    returnObj.setMsgCode("0");
-                    returnObj.setMsg("存入观看历史库出现问题");
-                }
-            }else {
-                returnObj.setMsgCode("0");
-                returnObj.setMsg("此电影不存在");
-            }
-        }else {
+        List<LabelEntity> entityList = labelService.findAll();
+        if(entityList != null){
+            returnObj.setMsgCode("1");
+            returnObj.setArr((JSONArray)JSONObject.toJSON(entityList));
+        } else {
             returnObj.setMsgCode("0");
-            returnObj.setMsg("什么都没有输入");
         }
         return returnObj;
     }
+
 }

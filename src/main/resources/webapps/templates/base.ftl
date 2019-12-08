@@ -9,6 +9,16 @@
     <link rel="stylesheet" href="/template/vendor/font-awesome/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="/template/css/styles.css">
 
+    <script src="/template/vendor/jquery/jquery.min.js"></script>
+    <script src="/template/vendor/popper.js/popper.min.js"></script>
+    <script src="/template/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/template/vendor/chart.js/chart.min.js"></script>
+    <script src="/template/js/carbon.js"></script>
+    <script src="/template/js/demo.js"></script>
+    <!-- bootstrapTable -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
+    <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
 </head>
 <body class="sidebar-fixed header-fixed">
 <div class="page-wrapper">
@@ -22,16 +32,6 @@
         <@block name="content"></@block>
     </div>
 </div>
-<script src="/template/vendor/jquery/jquery.min.js"></script>
-<script src="/template/vendor/popper.js/popper.min.js"></script>
-<script src="/template/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="/template/vendor/chart.js/chart.min.js"></script>
-<script src="/template/js/carbon.js"></script>
-<script src="/template/js/demo.js"></script>
-<!-- bootstrapTable -->
-<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
-<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
 <@block name="footer"></@block>
 </body>
 </html>
