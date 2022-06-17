@@ -20,7 +20,7 @@
         <mysql>5.1.47</mysql>
         <log4j>1.2.14</log4j>
         <json>2.4</json>
-        <fastjson>1.2.56</fastjson>
+        <fastjson>1.2.83</fastjson>
         <commons-lang>2.6</commons-lang>
         <rapid-core>4.0.5</rapid-core>
 
