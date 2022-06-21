@@ -17,7 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <java.version>1.8</java.version>
-        <mysql>5.1.47</mysql>
+        <mysql>8.0.28</mysql>
         <log4j>1.2.14</log4j>
         <json>2.4</json>
         <fastjson>1.2.56</fastjson>
